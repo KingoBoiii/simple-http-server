@@ -1,6 +1,13 @@
-const http = require('http');
+const https = require('https');
+const path = require('path');
+const fs = require('fs');
 
-const server = http.createServer(function(req, res) {
+const options = {
+    key: fs.readFileSync(path.join(__dirname, 'certificate/key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'certificate/cert.pem')),
+}
+
+const server = https.createServer(options, function(req, res) {
     res.writeHead(200, {'Content-Type': 'text/plain'});
     
     console.log(`Request made! [${res.statusCode}] Url: ${req.url}`);
@@ -12,7 +19,7 @@ const server = http.createServer(function(req, res) {
     }
 });
 
-server.listen(3000, 'localhost', function(err) { 
+server.listen(8000, 'localhost', function(err) { 
     if(err) {
         return console.log(`Error: ${err}`);
     }
